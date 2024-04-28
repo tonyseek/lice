@@ -23,7 +23,6 @@ setup(
     entry_points={
         'console_scripts': ['lice = lice:main']},
     platforms=['any'],
-    test_suite='lice.tests.collector',
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: BSD License',

@@ -1,4 +1,3 @@
-from pkg_resources import (resource_stream, resource_listdir)
 from io import StringIO
 import argparse
 import datetime
@@ -7,6 +6,21 @@ import os
 import subprocess
 import sys
 import getpass
+
+try:
+    from pkg_resources import resource_stream, resource_listdir
+except ImportError:
+    import importlib.resources
+
+    def resource_stream(package_or_requirement, resource_name):
+        # https://importlib-resources.readthedocs.io/en/latest/migration.html#pkg-resources-resource-stream
+        ref = importlib.resources.files(package_or_requirement).joinpath(resource_name)
+        return ref.open('rb')
+
+    def resource_listdir(package_or_requirement, resource_name):
+        # https://importlib-resources.readthedocs.io/en/latest/migration.html#pkg-resources-resource-listdir
+        resource_qualname = '.'.join([package_or_requirement, resource_name]).rstrip('.')
+        return [r.name for r in importlib.resources.files(resource_qualname).iterdir()]
 
 
 LICENSES = []
